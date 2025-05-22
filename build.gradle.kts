@@ -35,7 +35,7 @@ subprojects {
         buildFeatures.buildConfig = true
         defaultConfig {
             if (isApp) {
-                applicationId = "com.github.metacubex.clash"
+                applicationId = "com.fireworld.clash"
             }
 
             project.name.let { name ->
@@ -53,12 +53,12 @@ subprojects {
             resValue("integer", "release_code", "$versionCode")
 
             ndk {
-                abiFilters += listOf("arm64-v8a", "armeabi-v7a", "x86", "x86_64")
+                abiFilters += listOf("arm64-v8a", "armeabi-v7a")
             }
 
             externalNativeBuild {
                 cmake {
-                    abiFilters("arm64-v8a", "armeabi-v7a", "x86", "x86_64")
+                    abiFilters("arm64-v8a", "armeabi-v7a")
                 }
             }
 
