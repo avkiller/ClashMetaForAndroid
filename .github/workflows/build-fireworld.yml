@@ -67,13 +67,13 @@ jobs:
       - name: Release Build
         run: |
           ./gradlew --no-daemon app:assembleMetaRelease
-          mv app/build/outputs/apk/release/app-release-unsigned.apk app/build/outputs/apk/release/ClashMetaForAndroid-${{ env.VERSION }}.apk
+          # mv app/build/outputs/apk/release/app-release-unsigned.apk app/build/outputs/apk/release/ClashMetaForAndroid-${{ env.VERSION }}.apk
 
       - uses: r0adkll/sign-android-release@v1
         name: Sign app APK
         id: sign-ClashMetaForAndroid
         with:
-          releaseDirectory: app/build/outputs/apk/release
+          releaseDirectory: app/build/outputs/apk/meta/release
           signingKeyBase64: ${{ secrets.ANDROID_SIGNING_KEY }}
           alias: ${{ secrets.ANDROID_ALIAS }}
           keyStorePassword: ${{ secrets.ANDROID_KEY_STORE_PASSWORD }}
@@ -86,5 +86,6 @@ jobs:
           prerelease: true
           tag_name: ${{ env.TAG_NAME }}
           files: |
-            ${{steps.sign-ClashMetaForAndroid.outputs.signedReleaseFile}}
+            # ${{steps.sign-ClashMetaForAndroid.outputs.signedReleaseFile}}
+            app/build/outputs/apk/meta/release/*
       
