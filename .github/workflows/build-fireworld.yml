@@ -100,14 +100,20 @@ jobs:
         env:
           # env.ANDROID_SIGN_TOOL_VERSION is set by Step "Setup sign tool version variable"
           BUILD_TOOLS_VERSION: ${{ env.ANDROID_SIGN_TOOL_VERSION }}
-
+          
+      - name: Copy sign APK
+        shell: bash
+        run: |
+          mkdir -p signed-apk
+          
 
       - name: Publish signed apk package
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           prerelease: true
           tag_name: ${{ env.TAG_NAME }}
           files: |
             # ${{steps.sign-ClashMetaForAndroid.outputs.signedReleaseFile}}
-            app/build/outputs/apk/meta/release/*
+            app/build/outputs/apk/meta/release/*-signed.apk
+
       
