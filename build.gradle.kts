@@ -42,6 +42,17 @@ subprojects {
         return localProperties.getProperty(key)
     }
 
+    fun queryConfigProperty(key: String): Any? {
+        val localProperties = Properties()
+        val localPropertiesFile = rootProject.file("local.properties")
+        if (localPropertiesFile.exists()) {
+            localProperties.load(localPropertiesFile.inputStream())
+        } else {
+            return null
+        }
+        return localProperties.getProperty(key)
+    }
+
     extensions.configure<BaseExtension> {
         buildFeatures.buildConfig = true
         defaultConfig {
@@ -58,6 +69,8 @@ subprojects {
             minSdk = 21
             targetSdk = 35
 
+            versionName = "2.11.19"
+            versionCode = 211019
             versionName = "2.11.19"
             versionCode = 211019
 
@@ -98,9 +111,15 @@ subprojects {
 
             val removeSuffix = (queryConfigProperty("remove.suffix") as? String)?.toBoolean() == true
 
+            val removeSuffix = (queryConfigProperty("remove.suffix") as? String)?.toBoolean() == true
+
             create("alpha") {
                 isDefault = true
                 dimension = flavorDimensionList[0]
+                if (!removeSuffix) {
+                    versionNameSuffix = ".Alpha"
+                }
+
                 if (!removeSuffix) {
                     versionNameSuffix = ".Alpha"
                 }
@@ -112,6 +131,7 @@ subprojects {
                 resValue("string", "application_name", "@string/application_name_alpha")
 
                 if (isApp && !removeSuffix) {
+                if (isApp && !removeSuffix) {
                     applicationIdSuffix = ".alpha"
                 }
             }
@@ -122,12 +142,16 @@ subprojects {
                 if (!removeSuffix) {
                     versionNameSuffix = ".Meta"
                 }
+                if (!removeSuffix) {
+                    versionNameSuffix = ".Meta"
+                }
 
                 buildConfigField("boolean", "PREMIUM", "Boolean.parseBoolean(\"false\")")
 
                 resValue("string", "launch_name", "@string/launch_name_meta")
                 resValue("string", "application_name", "@string/application_name_meta")
 
+                if (isApp && !removeSuffix) {
                 if (isApp && !removeSuffix) {
                     applicationIdSuffix = ".meta"
                 }
