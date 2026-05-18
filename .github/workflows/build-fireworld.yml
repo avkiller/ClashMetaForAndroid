@@ -6,7 +6,7 @@ on:
       version:
         description: 'Version for this release'
         type: string
-        default: 'v1.4.0'
+        default: 'v2.11.28'
         required: true
 
 env:
