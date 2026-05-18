@@ -2,12 +2,18 @@ name: Build fireworld Release
 
 on:
   workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version for this release'
+        type: string
+        default: 'v1.4.0'
+        required: true
 
 env:
   # Our build metadata
   NDK_VERSION: "r29"
-  TAG_NAME: "nightly"
-  VERSION: "1.1.1"
+  TAG_NAME: ${{ inputs.version }}
+  VERSION: ${{ inputs.version }}
 
 jobs:
   BuildRelease:
@@ -39,7 +45,7 @@ jobs:
       - name: Setup Go
         uses: actions/setup-go@v5
         with:
-          go-version: "1.25"
+          go-version: "1.26"
 
       - uses: actions/cache@v4
         with:
@@ -50,6 +56,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-go-
       - name: Get tag version
+        if: false
         run: |
           # 如果是手动触发 (workflow_dispatch)
           if [ "$GITHUB_EVENT_NAME" = "workflow_dispatch" ]; then
@@ -111,6 +118,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           prerelease: true
+          draft: true
           tag_name: ${{ env.TAG_NAME }}
           files: |
             # ${{steps.sign-ClashMetaForAndroid.outputs.signedReleaseFile}}
